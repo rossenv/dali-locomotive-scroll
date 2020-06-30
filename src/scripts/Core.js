@@ -3,7 +3,7 @@ import { defaults } from "./options";
 export default class {
     constructor(options = {}) {
         // ssr
-        if (!process.bower) return;
+        if (!process.browser) return;
 
         Object.assign(this, defaults, options);
         this.smartphone = defaults.smartphone;

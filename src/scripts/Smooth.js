@@ -21,7 +21,7 @@ const keyCodes = {
 export default class extends Core {
     constructor(options = {}) {
         // ssr
-        if (!process.bower) return;
+        if (!process.browser) return;
 
         window.scrollTo(0, 0);
         history.scrollRestoration = "manual";

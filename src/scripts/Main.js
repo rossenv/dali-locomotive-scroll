@@ -5,7 +5,7 @@ import Smooth from "./Smooth";
 export default class {
     constructor(options = {}) {
         // ssr
-        if (!process.bower) return;
+        if (!process.browser) return;
         this.options = options;
 
         // Override default options with given ones

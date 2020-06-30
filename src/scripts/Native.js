@@ -4,7 +4,7 @@ import smoothscroll from "smoothscroll-polyfill";
 export default class extends Core {
     constructor(options = {}) {
         // ssr
-        if (!process.bower) return;
+        if (!process.browser) return;
 
         super(options);
 

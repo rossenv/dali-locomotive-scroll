@@ -260,12 +260,14 @@
 
       _classCallCheck(this, _default);
 
+      // ssr
+      if (!process.browser) return;
       Object.assign(this, defaults, options);
       this.smartphone = defaults.smartphone;
       if (options.smartphone) Object.assign(this.smartphone, options.smartphone);
       this.tablet = defaults.tablet;
       if (options.tablet) Object.assign(this.tablet, options.tablet);
-      this.namespace = 'locomotive';
+      this.namespace = "locomotive";
       this.html = document.documentElement;
       this.windowHeight = window.innerHeight;
       this.windowWidth = window.innerWidth;
@@ -293,20 +295,20 @@
 
       if (this.isMobile) {
         if (this.isTablet) {
-          this.context = 'tablet';
+          this.context = "tablet";
         } else {
-          this.context = 'smartphone';
+          this.context = "smartphone";
         }
       } else {
-        this.context = 'desktop';
+        this.context = "desktop";
       }
 
       if (this.isMobile) this.direction = this[this.context].direction;
 
-      if (this.direction === 'horizontal') {
-        this.directionAxis = 'x';
+      if (this.direction === "horizontal") {
+        this.directionAxis = "x";
       } else {
-        this.directionAxis = 'y';
+        this.directionAxis = "y";
       }
 
       if (this.getDirection) {
@@ -318,7 +320,7 @@
       }
 
       this.html.classList.add(this.initClass);
-      window.addEventListener('resize', this.checkResize, false);
+      window.addEventListener("resize", this.checkResize, false);
     }
 
     _createClass(_default, [{
@@ -352,23 +354,23 @@
       key: "checkContext",
       value: function checkContext() {
         if (!this.reloadOnContextChange) return;
-        this.isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 || this.windowWidth < this.tablet.breakpoint;
+        this.isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1 || this.windowWidth < this.tablet.breakpoint;
         this.isTablet = this.isMobile && this.windowWidth >= this.tablet.breakpoint;
         var oldContext = this.context;
 
         if (this.isMobile) {
           if (this.isTablet) {
-            this.context = 'tablet';
+            this.context = "tablet";
           } else {
-            this.context = 'smartphone';
+            this.context = "smartphone";
           }
         } else {
-          this.context = 'desktop';
+          this.context = "desktop";
         }
 
         if (oldContext != this.context) {
-          var oldSmooth = oldContext == 'desktop' ? this.smooth : this[oldContext].smooth;
-          var newSmooth = this.context == 'desktop' ? this.smooth : this[this.context].smooth;
+          var oldSmooth = oldContext == "desktop" ? this.smooth : this[oldContext].smooth;
+          var newSmooth = this.context == "desktop" ? this.smooth : this[this.context].smooth;
           if (oldSmooth != newSmooth) window.location.reload();
         }
       }
@@ -380,14 +382,14 @@
         this.scrollToEls = this.el.querySelectorAll("[data-".concat(this.name, "-to]"));
         this.setScrollTo = this.setScrollTo.bind(this);
         this.scrollToEls.forEach(function (el) {
-          el.addEventListener('click', _this2.setScrollTo, false);
+          el.addEventListener("click", _this2.setScrollTo, false);
         });
       }
     }, {
       key: "setScrollTo",
       value: function setScrollTo(event) {
         event.preventDefault();
-        this.scrollTo(event.currentTarget.getAttribute("data-".concat(this.name, "-href")) || event.currentTarget.getAttribute('href'), event.currentTarget.getAttribute("data-".concat(this.name, "-offset")));
+        this.scrollTo(event.currentTarget.getAttribute("data-".concat(this.name, "-href")) || event.currentTarget.getAttribute("href"), event.currentTarget.getAttribute("data-".concat(this.name, "-offset")));
       }
     }, {
       key: "addElements",
@@ -403,7 +405,7 @@
         var scrollRight = scrollLeft + this.windowWidth;
         this.els.forEach(function (el, i) {
           if (el && (!el.inView || hasCallEventSet)) {
-            if (_this3.direction === 'horizontal') {
+            if (_this3.direction === "horizontal") {
               if (scrollRight >= el.left && scrollLeft < el.right) {
                 _this3.setInView(el, i);
               }
@@ -415,7 +417,7 @@
           }
 
           if (el && el.inView) {
-            if (_this3.direction === 'horizontal') {
+            if (_this3.direction === "horizontal") {
               if (scrollRight < el.left || scrollLeft > el.right) {
                 _this3.setOutOfView(el, i);
               }
@@ -438,7 +440,7 @@
         current.el.classList.add(current["class"]);
 
         if (current.call && this.hasCallEventSet) {
-          this.dispatchCall(current, 'enter');
+          this.dispatchCall(current, "enter");
 
           if (!current.repeat) {
             this.els[i].call = false;
@@ -459,7 +461,7 @@
         }
 
         if (current.call && this.hasCallEventSet) {
-          this.dispatchCall(current, 'exit');
+          this.dispatchCall(current, "exit");
         }
 
         if (current.repeat) {
@@ -470,18 +472,18 @@
       key: "dispatchCall",
       value: function dispatchCall(current, way) {
         this.callWay = way;
-        this.callValue = current.call.split(',').map(function (item) {
+        this.callValue = current.call.split(",").map(function (item) {
           return item.trim();
         });
         this.callObj = current;
         if (this.callValue.length == 1) this.callValue = this.callValue[0];
-        var callEvent = new Event(this.namespace + 'call');
+        var callEvent = new Event(this.namespace + "call");
         this.el.dispatchEvent(callEvent);
       }
     }, {
       key: "dispatchScroll",
       value: function dispatchScroll() {
-        var scrollEvent = new Event(this.namespace + 'scroll');
+        var scrollEvent = new Event(this.namespace + "scroll");
         this.el.dispatchEvent(scrollEvent);
       }
     }, {
@@ -498,7 +500,7 @@
           this.el.addEventListener(this.namespace + event, this.checkEvent, false);
         }
 
-        if (event === 'call') {
+        if (event === "call") {
           this.hasCallEventSet = true;
           this.detectElements(true);
         }
@@ -521,15 +523,15 @@
       value: function checkEvent(event) {
         var _this4 = this;
 
-        var name = event.type.replace(this.namespace, '');
+        var name = event.type.replace(this.namespace, "");
         var list = this.listeners[name];
         if (!list || list.length === 0) return;
         list.forEach(function (func) {
           switch (name) {
-            case 'scroll':
+            case "scroll":
               return func(_this4.instance);
 
-            case 'call':
+            case "call":
               return func(_this4.callValue, _this4.callWay, _this4.callObj);
 
             default:
@@ -556,13 +558,13 @@
       value: function destroy() {
         var _this5 = this;
 
-        window.removeEventListener('resize', this.checkResize, false);
+        window.removeEventListener("resize", this.checkResize, false);
         Object.keys(this.listeners).forEach(function (event) {
           _this5.el.removeEventListener(_this5.namespace + event, _this5.checkEvent, false);
         });
         this.listeners = {};
         this.scrollToEls.forEach(function (el) {
-          el.removeEventListener('click', _this5.setScrollTo, false);
+          el.removeEventListener("click", _this5.setScrollTo, false);
         });
       }
     }]);
@@ -1021,8 +1023,10 @@
 
       _classCallCheck(this, _default);
 
+      // ssr
+      if (!process.browser) return _possibleConstructorReturn(_this);
       _this = _super.call(this, options);
-      window.addEventListener('scroll', _this.checkScroll, false);
+      window.addEventListener("scroll", _this.checkScroll, false);
       smoothscroll.polyfill();
       return _this;
     }
@@ -1067,12 +1071,12 @@
       key: "addDirection",
       value: function addDirection() {
         if (window.pageYOffset > this.instance.scroll.y) {
-          if (this.instance.direction !== 'down') {
-            this.instance.direction = 'down';
+          if (this.instance.direction !== "down") {
+            this.instance.direction = "down";
           }
         } else if (window.pageYOffset < this.instance.scroll.y) {
-          if (this.instance.direction !== 'up') {
-            this.instance.direction = 'up';
+          if (this.instance.direction !== "up") {
+            this.instance.direction = "up";
           }
         }
       }
@@ -1099,18 +1103,18 @@
         var _this3 = this;
 
         this.els = [];
-        var els = this.el.querySelectorAll('[data-' + this.name + ']');
+        var els = this.el.querySelectorAll("[data-" + this.name + "]");
         els.forEach(function (el, id) {
-          var cl = el.dataset[_this3.name + 'Class'] || _this3["class"];
+          var cl = el.dataset[_this3.name + "Class"] || _this3["class"];
 
           var top = el.getBoundingClientRect().top + _this3.instance.scroll.y;
 
           var bottom = top + el.offsetHeight;
-          var offset = typeof el.dataset[_this3.name + 'Offset'] === 'string' ? el.dataset[_this3.name + 'Offset'].split(',') : _this3.offset;
-          var repeat = el.dataset[_this3.name + 'Repeat'];
-          var call = el.dataset[_this3.name + 'Call'];
+          var offset = typeof el.dataset[_this3.name + "Offset"] === "string" ? el.dataset[_this3.name + "Offset"].split(",") : _this3.offset;
+          var repeat = el.dataset[_this3.name + "Repeat"];
+          var call = el.dataset[_this3.name + "Call"];
 
-          if (repeat == 'false') {
+          if (repeat == "false") {
             repeat = false;
           } else if (repeat != undefined) {
             repeat = true;
@@ -1159,9 +1163,9 @@
 
         if (offset) {
           for (var i = 0; i < offset.length; i++) {
-            if (typeof offset[i] == 'string') {
-              if (offset[i].includes('%')) {
-                relativeOffset[i] = parseInt(offset[i].replace('%', '') * this.windowHeight / 100);
+            if (typeof offset[i] == "string") {
+              if (offset[i].includes("%")) {
+                relativeOffset[i] = parseInt(offset[i].replace("%", "") * this.windowHeight / 100);
               } else {
                 relativeOffset[i] = parseInt(offset[i]);
               }
@@ -1189,11 +1193,11 @@
         var target;
         var offset = offsetOption ? parseInt(offsetOption) : 0;
 
-        if (typeof targetOption === 'string') {
+        if (typeof targetOption === "string") {
           // Selector or boundaries
-          if (targetOption === 'top') {
+          if (targetOption === "top") {
             target = this.html;
-          } else if (targetOption === 'bottom') {
+          } else if (targetOption === "bottom") {
             target = this.html.offsetHeight - window.innerHeight;
           } else {
             target = document.querySelector(targetOption); // If the query fails, abort
@@ -1202,19 +1206,19 @@
               return;
             }
           }
-        } else if (typeof targetOption === 'number') {
+        } else if (typeof targetOption === "number") {
           // Absolute coordinate
           target = parseInt(targetOption);
         } else if (targetOption && targetOption.tagName) {
           // DOM Element
           target = targetOption;
         } else {
-          console.warn('`targetOption` parameter is not valid');
+          console.warn("`targetOption` parameter is not valid");
           return;
         } // We have a target that is not a coordinate yet, get it
 
 
-        if (typeof target !== 'number') {
+        if (typeof target !== "number") {
           offset = target.getBoundingClientRect().top + offset + this.instance.scroll.y;
         } else {
           offset = target + offset;
@@ -1225,17 +1229,17 @@
 
           var onScroll = function onScroll() {
             if (window.pageYOffset.toFixed() === offset) {
-              window.removeEventListener('scroll', onScroll);
+              window.removeEventListener("scroll", onScroll);
               callback();
             }
           };
 
-          window.addEventListener('scroll', onScroll);
+          window.addEventListener("scroll", onScroll);
         }
 
         window.scrollTo({
           top: offset,
-          behavior: 'smooth'
+          behavior: "smooth"
         });
       }
     }, {
@@ -1249,7 +1253,7 @@
       value: function destroy() {
         _get(_getPrototypeOf(_default.prototype), "destroy", this).call(this);
 
-        window.removeEventListener('scroll', this.checkScroll, false);
+        window.removeEventListener("scroll", this.checkScroll, false);
       }
     }]);
 
@@ -1953,8 +1957,10 @@
 
       _classCallCheck(this, _default);
 
+      // ssr
+      if (!process.browser) return _possibleConstructorReturn(_this);
       window.scrollTo(0, 0);
-      history.scrollRestoration = 'manual';
+      history.scrollRestoration = "manual";
       _this = _super.call(this, options);
       if (_this.inertia) _this.lerp = _this.inertia * 0.1;
       _this.isScrolling = false;
@@ -1964,7 +1970,7 @@
       _this.parallaxElements = [];
       _this.stop = false;
       _this.checkKey = _this.checkKey.bind(_assertThisInitialized(_this));
-      window.addEventListener('keydown', _this.checkKey, false);
+      window.addEventListener("keydown", _this.checkKey, false);
       return _this;
     }
 
@@ -1983,7 +1989,7 @@
         }, this.instance);
         this.vs = new src({
           el: this.scrollFromAnywhere ? document : this.el,
-          mouseMultiplier: navigator.platform.indexOf('Win') > -1 ? 1 : 0.4,
+          mouseMultiplier: navigator.platform.indexOf("Win") > -1 ? 1 : 0.4,
           firefoxMultiplier: this.firefoxMultiplier,
           touchMultiplier: this.touchMultiplier,
           useKeyboard: false,
@@ -2020,7 +2026,7 @@
       value: function setScrollLimit() {
         this.instance.limit.y = this.el.offsetHeight - this.windowHeight;
 
-        if (this.direction === 'horizontal') {
+        if (this.direction === "horizontal") {
           var totalWidth = 0;
           var nodes = this.el.children;
 
@@ -2151,7 +2157,7 @@
 
           for (var i = this.sections.length - 1; i >= 0; i--) {
             if (this.sections[i].persistent || this.instance.scroll[this.directionAxis] > this.sections[i].offset[this.directionAxis] && this.instance.scroll[this.directionAxis] < this.sections[i].limit[this.directionAxis]) {
-              if (this.direction === 'horizontal') {
+              if (this.direction === "horizontal") {
                 this.transform(this.sections[i].el, -this.instance.scroll[this.directionAxis], 0);
               } else {
                 this.transform(this.sections[i].el, 0, -this.instance.scroll[this.directionAxis]);
@@ -2160,14 +2166,14 @@
               if (!this.sections[i].inView) {
                 this.sections[i].inView = true;
                 this.sections[i].el.style.opacity = 1;
-                this.sections[i].el.style.pointerEvents = 'all';
-                this.sections[i].el.setAttribute("data-".concat(this.name, "-section-inview"), '');
+                this.sections[i].el.style.pointerEvents = "all";
+                this.sections[i].el.setAttribute("data-".concat(this.name, "-section-inview"), "");
               }
             } else {
               if (this.sections[i].inView) {
                 this.sections[i].inView = false;
                 this.sections[i].el.style.opacity = 0;
-                this.sections[i].el.style.pointerEvents = 'none';
+                this.sections[i].el.style.pointerEvents = "none";
                 this.sections[i].el.removeAttribute("data-".concat(this.name, "-section-inview"));
               }
 
@@ -2188,7 +2194,7 @@
           this.transformElements();
           var scrollBarTranslation = this.instance.scroll[this.directionAxis] / this.instance.limit[this.directionAxis] * this.scrollBarLimit[this.directionAxis];
 
-          if (this.direction === 'horizontal') {
+          if (this.direction === "horizontal") {
             this.transform(this.scrollbarThumb, scrollBarTranslation, 0);
           } else {
             this.transform(this.scrollbarThumb, 0, scrollBarTranslation);
@@ -2245,22 +2251,22 @@
       key: "addDirection",
       value: function addDirection() {
         if (this.instance.delta.y > this.instance.scroll.y) {
-          if (this.instance.direction !== 'down') {
-            this.instance.direction = 'down';
+          if (this.instance.direction !== "down") {
+            this.instance.direction = "down";
           }
         } else if (this.instance.delta.y < this.instance.scroll.y) {
-          if (this.instance.direction !== 'up') {
-            this.instance.direction = 'up';
+          if (this.instance.direction !== "up") {
+            this.instance.direction = "up";
           }
         }
 
         if (this.instance.delta.x > this.instance.scroll.x) {
-          if (this.instance.direction !== 'right') {
-            this.instance.direction = 'right';
+          if (this.instance.direction !== "right") {
+            this.instance.direction = "right";
           }
         } else if (this.instance.delta.x < this.instance.scroll.x) {
-          if (this.instance.direction !== 'left') {
-            this.instance.direction = 'left';
+          if (this.instance.direction !== "left") {
+            this.instance.direction = "left";
           }
         }
       }
@@ -2276,8 +2282,8 @@
     }, {
       key: "initScrollBar",
       value: function initScrollBar() {
-        this.scrollbar = document.createElement('span');
-        this.scrollbarThumb = document.createElement('span');
+        this.scrollbar = document.createElement("span");
+        this.scrollbarThumb = document.createElement("span");
         this.scrollbar.classList.add("".concat(this.scrollbarClass));
         this.scrollbarThumb.classList.add("".concat(this.scrollbarClass, "_thumb"));
         this.scrollbar.append(this.scrollbarThumb);
@@ -2286,11 +2292,11 @@
         this.getScrollBar = this.getScrollBar.bind(this);
         this.releaseScrollBar = this.releaseScrollBar.bind(this);
         this.moveScrollBar = this.moveScrollBar.bind(this);
-        this.scrollbarThumb.addEventListener('mousedown', this.getScrollBar);
-        window.addEventListener('mouseup', this.releaseScrollBar);
-        window.addEventListener('mousemove', this.moveScrollBar); // Set scrollbar values
+        this.scrollbarThumb.addEventListener("mousedown", this.getScrollBar);
+        window.addEventListener("mouseup", this.releaseScrollBar);
+        window.addEventListener("mousemove", this.moveScrollBar); // Set scrollbar values
 
-        if (this.direction == 'horizontal') {
+        if (this.direction == "horizontal") {
           if (this.instance.limit.x + this.windowWidth <= this.windowWidth) {
             return;
           }
@@ -2303,7 +2309,7 @@
         this.scrollbarHeight = this.scrollbar.getBoundingClientRect().height;
         this.scrollbarWidth = this.scrollbar.getBoundingClientRect().width;
 
-        if (this.direction === 'horizontal') {
+        if (this.direction === "horizontal") {
           this.scrollbarThumb.style.width = "".concat(this.scrollbarWidth * this.scrollbarWidth / (this.instance.limit.x + this.scrollbarWidth), "px");
         } else {
           this.scrollbarThumb.style.height = "".concat(this.scrollbarHeight * this.scrollbarHeight / (this.instance.limit.y + this.scrollbarHeight), "px");
@@ -2324,7 +2330,7 @@
         this.scrollbarHeight = this.scrollbar.getBoundingClientRect().height;
         this.scrollbarWidth = this.scrollbar.getBoundingClientRect().width;
 
-        if (this.direction === 'horizontal') {
+        if (this.direction === "horizontal") {
           this.scrollbarThumb.style.width = "".concat(this.scrollbarWidth * this.scrollbarWidth / (this.instance.limit.x + this.scrollbarWidth), "px");
         } else {
           this.scrollbarThumb.style.height = "".concat(this.scrollbarHeight * this.scrollbarHeight / (this.instance.limit.y + this.scrollbarHeight), "px");
@@ -2338,9 +2344,9 @@
     }, {
       key: "destroyScrollBar",
       value: function destroyScrollBar() {
-        this.scrollbarThumb.removeEventListener('mousedown', this.getScrollBar);
-        window.removeEventListener('mouseup', this.releaseScrollBar);
-        window.removeEventListener('mousemove', this.moveScrollBar);
+        this.scrollbarThumb.removeEventListener("mousedown", this.getScrollBar);
+        window.removeEventListener("mouseup", this.releaseScrollBar);
+        window.removeEventListener("mousemove", this.moveScrollBar);
         this.scrollbar.remove();
       }
     }, {
@@ -2392,18 +2398,18 @@
           var els = _this6.sections[y].el.querySelectorAll("[data-".concat(_this6.name, "]"));
 
           els.forEach(function (el, id) {
-            var cl = el.dataset[_this6.name + 'Class'] || _this6["class"];
+            var cl = el.dataset[_this6.name + "Class"] || _this6["class"];
             var top;
             var left;
-            var repeat = el.dataset[_this6.name + 'Repeat'];
-            var call = el.dataset[_this6.name + 'Call'];
-            var position = el.dataset[_this6.name + 'Position'];
-            var delay = el.dataset[_this6.name + 'Delay'];
-            var direction = el.dataset[_this6.name + 'Direction'];
-            var sticky = typeof el.dataset[_this6.name + 'Sticky'] === 'string';
-            var speed = el.dataset[_this6.name + 'Speed'] ? parseFloat(el.dataset[_this6.name + 'Speed']) / 10 : false;
-            var offset = typeof el.dataset[_this6.name + 'Offset'] === 'string' ? el.dataset[_this6.name + 'Offset'].split(',') : _this6.offset;
-            var target = el.dataset[_this6.name + 'Target'];
+            var repeat = el.dataset[_this6.name + "Repeat"];
+            var call = el.dataset[_this6.name + "Call"];
+            var position = el.dataset[_this6.name + "Position"];
+            var delay = el.dataset[_this6.name + "Delay"];
+            var direction = el.dataset[_this6.name + "Direction"];
+            var sticky = typeof el.dataset[_this6.name + "Sticky"] === "string";
+            var speed = el.dataset[_this6.name + "Speed"] ? parseFloat(el.dataset[_this6.name + "Speed"]) / 10 : false;
+            var offset = typeof el.dataset[_this6.name + "Offset"] === "string" ? el.dataset[_this6.name + "Offset"].split(",") : _this6.offset;
+            var target = el.dataset[_this6.name + "Target"];
             var targetEl;
 
             if (target !== undefined) {
@@ -2444,7 +2450,7 @@
               };
             }
 
-            if (repeat == 'false') {
+            if (repeat == "false") {
               repeat = false;
             } else if (repeat != undefined) {
               repeat = true;
@@ -2455,11 +2461,11 @@
             var relativeOffset = [0, 0];
 
             if (offset) {
-              if (_this6.direction === 'horizontal') {
+              if (_this6.direction === "horizontal") {
                 for (var i = 0; i < offset.length; i++) {
-                  if (typeof offset[i] == 'string') {
-                    if (offset[i].includes('%')) {
-                      relativeOffset[i] = parseInt(offset[i].replace('%', '') * _this6.windowWidth / 100);
+                  if (typeof offset[i] == "string") {
+                    if (offset[i].includes("%")) {
+                      relativeOffset[i] = parseInt(offset[i].replace("%", "") * _this6.windowWidth / 100);
                     } else {
                       relativeOffset[i] = parseInt(offset[i]);
                     }
@@ -2472,9 +2478,9 @@
                 right = right - relativeOffset[1];
               } else {
                 for (var i = 0; i < offset.length; i++) {
-                  if (typeof offset[i] == 'string') {
-                    if (offset[i].includes('%')) {
-                      relativeOffset[i] = parseInt(offset[i].replace('%', '') * _this6.windowHeight / 100);
+                  if (typeof offset[i] == "string") {
+                    if (offset[i].includes("%")) {
+                      relativeOffset[i] = parseInt(offset[i].replace("%", "") * _this6.windowHeight / 100);
                     } else {
                       relativeOffset[i] = parseInt(offset[i]);
                     }
@@ -2538,7 +2544,7 @@
             x: offset.x + section.getBoundingClientRect().width + window.innerWidth * 2,
             y: offset.y + section.getBoundingClientRect().height + window.innerHeight * 2
           };
-          var persistent = typeof section.dataset[_this7.name + 'Persistent'] === 'string';
+          var persistent = typeof section.dataset[_this7.name + "Persistent"] === "string";
           var mappedSection = {
             el: section,
             offset: offset,
@@ -2588,27 +2594,27 @@
 
           if (current.inView || setAllElements) {
             switch (current.position) {
-              case 'top':
+              case "top":
                 transformDistance = _this8.instance.scroll[_this8.directionAxis] * -current.speed;
                 break;
 
-              case 'elementTop':
+              case "elementTop":
                 transformDistance = (scrollBottom - current.top) * -current.speed;
                 break;
 
-              case 'bottom':
+              case "bottom":
                 transformDistance = (_this8.instance.limit[_this8.directionAxis] - scrollBottom + _this8.windowHeight) * current.speed;
                 break;
 
-              case 'left':
+              case "left":
                 transformDistance = _this8.instance.scroll[_this8.directionAxis] * -current.speed;
                 break;
 
-              case 'elementLeft':
+              case "elementLeft":
                 transformDistance = (scrollRight - current.left) * -current.speed;
                 break;
 
-              case 'right':
+              case "right":
                 transformDistance = (_this8.instance.limit[_this8.directionAxis] - scrollRight + _this8.windowHeight) * current.speed;
                 break;
 
@@ -2620,13 +2626,13 @@
 
           if (current.sticky) {
             if (current.inView) {
-              if (_this8.direction === 'horizontal') {
+              if (_this8.direction === "horizontal") {
                 transformDistance = _this8.instance.scroll.x - current.left + window.innerWidth;
               } else {
                 transformDistance = _this8.instance.scroll.y - current.top + window.innerHeight;
               }
             } else {
-              if (_this8.direction === 'horizontal') {
+              if (_this8.direction === "horizontal") {
                 if (_this8.instance.scroll.x < current.left - window.innerWidth && _this8.instance.scroll.x < current.left - window.innerWidth / 2) {
                   transformDistance = 0;
                 } else if (_this8.instance.scroll.x > current.right && _this8.instance.scroll.x > current.right + 100) {
@@ -2647,7 +2653,7 @@
           }
 
           if (transformDistance !== false) {
-            if (current.direction === 'horizontal' || _this8.direction === 'horizontal' && current.direction !== 'vertical') {
+            if (current.direction === "horizontal" || _this8.direction === "horizontal" && current.direction !== "vertical") {
               _this8.transform(current.el, transformDistance, 0, isForced ? false : current.delay);
             } else {
               _this8.transform(current.el, 0, transformDistance, isForced ? false : current.delay);
@@ -2672,7 +2678,7 @@
         var _this9 = this;
 
         var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1000;
-        var easing = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [0.25, 0.00, 0.35, 1.00];
+        var easing = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [0.25, 0.0, 0.35, 1.0];
         var disableLerp = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
         var callback = arguments.length > 5 ? arguments[5] : undefined;
         // TODO - In next breaking update, use an object as 2nd parameter for options (offset, duration, easing, disableLerp, callback)
@@ -2680,15 +2686,15 @@
         var offset = offsetOption ? parseInt(offsetOption) : 0;
         easing = src$1.apply(void 0, _toConsumableArray(easing));
 
-        if (typeof targetOption === 'string') {
+        if (typeof targetOption === "string") {
           // Selector or boundaries
-          if (targetOption === 'top') {
+          if (targetOption === "top") {
             target = 0;
-          } else if (targetOption === 'bottom') {
+          } else if (targetOption === "bottom") {
             target = this.instance.limit.y;
-          } else if (targetOption === 'left') {
+          } else if (targetOption === "left") {
             target = 0;
-          } else if (targetOption === 'right') {
+          } else if (targetOption === "right") {
             target = this.instance.limit.x;
           } else {
             target = document.querySelector(targetOption); // If the query fails, abort
@@ -2697,19 +2703,19 @@
               return;
             }
           }
-        } else if (typeof targetOption === 'number') {
+        } else if (typeof targetOption === "number") {
           // Absolute coordinate
           target = parseInt(targetOption);
         } else if (targetOption && targetOption.tagName) {
           // DOM Element
           target = targetOption;
         } else {
-          console.warn('`targetOption` parameter is not valid');
+          console.warn("`targetOption` parameter is not valid");
           return;
         } // We have a target that is not a coordinate yet, get it
 
 
-        if (typeof target !== 'number') {
+        if (typeof target !== "number") {
           // Verify the given target belongs to this scroll scope
           var targetInScope = getParents(target).includes(this.el);
 
@@ -2736,7 +2742,7 @@
           } // Final value of scroll destination : offsetTop + (optional offset given in options) - (parent's section translate)
 
 
-          if (this.direction === 'horizontal') {
+          if (this.direction === "horizontal") {
             offset = offsetLeft + offset - parentSectionOffset;
           } else {
             offset = offsetTop + offset - parentSectionOffset;
@@ -2755,7 +2761,7 @@
 
         var render = function render(p) {
           if (disableLerp) {
-            if (_this9.direction === 'horizontal') {
+            if (_this9.direction === "horizontal") {
               _this9.setScroll(scrollStart + scrollDiff * p, _this9.instance.delta.y);
             } else {
               _this9.setScroll(_this9.instance.delta.x, scrollStart + scrollDiff * p);
@@ -2838,7 +2844,7 @@
         this.html.classList.remove(this.smoothClass);
         this.vs.destroy();
         this.destroyScrollBar();
-        window.removeEventListener('keydown', this.checkKey, false);
+        window.removeEventListener("keydown", this.checkKey, false);
       }
     }]);
 
@@ -2851,6 +2857,8 @@
 
       _classCallCheck(this, _default);
 
+      // ssr
+      if (!process.browser) return;
       this.options = options; // Override default options with given ones
 
       Object.assign(this, defaults, options);
@@ -2858,16 +2866,16 @@
       if (options.smartphone) Object.assign(this.smartphone, options.smartphone);
       this.tablet = defaults.tablet;
       if (options.tablet) Object.assign(this.tablet, options.tablet);
-      if (!this.smooth && this.direction == 'horizontal') console.warn('🚨 `smooth` & `horizontal` direction are not yet compatible');
-      if (!this.tablet.smooth && this.tablet.direction == 'horizontal') console.warn('🚨 `smooth` & `horizontal` direction are not yet compatible (tablet)');
-      if (!this.smartphone.smooth && this.smartphone.direction == 'horizontal') console.warn('🚨 `smooth` & `horizontal` direction are not yet compatible (smartphone)');
+      if (!this.smooth && this.direction == "horizontal") console.warn("🚨 `smooth` & `horizontal` direction are not yet compatible");
+      if (!this.tablet.smooth && this.tablet.direction == "horizontal") console.warn("🚨 `smooth` & `horizontal` direction are not yet compatible (tablet)");
+      if (!this.smartphone.smooth && this.smartphone.direction == "horizontal") console.warn("🚨 `smooth` & `horizontal` direction are not yet compatible (smartphone)");
       this.init();
     }
 
     _createClass(_default, [{
       key: "init",
       value: function init() {
-        this.options.isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 || window.innerWidth < this.tablet.breakpoint;
+        this.options.isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1 || window.innerWidth < this.tablet.breakpoint;
         this.options.isTablet = this.options.isMobile && window.innerWidth >= this.tablet.breakpoint;
 
         if (this.smooth && !this.options.isMobile || this.tablet.smooth && this.options.isTablet || this.smartphone.smooth && this.options.isMobile && !this.options.isTablet) {
