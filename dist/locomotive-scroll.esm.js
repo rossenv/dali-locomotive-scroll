@@ -1513,15 +1513,16 @@ var lethargy = createCommonjsModule(function (module, exports) {
 });
 
 var support = (function getSupport() {
-    return {
-        hasWheelEvent: 'onwheel' in document,
-        hasMouseWheelEvent: 'onmousewheel' in document,
-        hasTouch: ('ontouchstart' in window) || window.TouchEvent || window.DocumentTouch && document instanceof DocumentTouch,
-        hasTouchWin: navigator.msMaxTouchPoints && navigator.msMaxTouchPoints > 1,
-        hasPointer: !!window.navigator.msPointerEnabled,
-        hasKeyDown: 'onkeydown' in document,
-        isFirefox: navigator.userAgent.indexOf('Firefox') > -1
-    };
+  if (!process.browser) return
+  return {
+    hasWheelEvent: "onwheel" in document,
+    hasMouseWheelEvent: "onmousewheel" in document,
+    hasTouch: "ontouchstart" in document,
+    hasTouchWin: navigator.msMaxTouchPoints && navigator.msMaxTouchPoints > 1,
+    hasPointer: !!window.navigator.msPointerEnabled,
+    hasKeyDown: "onkeydown" in document,
+    isFirefox: navigator.userAgent.indexOf("Firefox") > -1,
+  }
 })();
 
 var toString = Object.prototype.toString,
@@ -1592,8 +1593,7 @@ function VirtualScroll(options) {
         preventTouch: false,
         unpreventTouchClass: 'vs-touchmove-allowed',
         limitInertia: false,
-        useKeyboard: true,
-        useTouch: true
+        useKeyboard: true
     }, options);
 
     if (this.options.limitInertia) this._lethargy = new Lethargy();
@@ -1720,7 +1720,7 @@ VirtualScroll.prototype._bind = function() {
     if(support.hasWheelEvent) this.el.addEventListener('wheel', this._onWheel, this.listenerOptions);
     if(support.hasMouseWheelEvent) this.el.addEventListener('mousewheel', this._onMouseWheel, this.listenerOptions);
 
-    if(support.hasTouch && this.options.useTouch) {
+    if(support.hasTouch) {
         this.el.addEventListener('touchstart', this._onTouchStart, this.listenerOptions);
         this.el.addEventListener('touchmove', this._onTouchMove, this.listenerOptions);
     }
