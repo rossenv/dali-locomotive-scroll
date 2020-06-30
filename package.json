@@ -25,7 +25,7 @@
     },
     "dependencies": {
         "bezier-easing": "^2.1.0",
-        "smoothscroll-polyfill": "^0.4.4",
-        "virtual-scroll-locomotive": "https://github.com/rossenv/virtual-scroll.git"
+        "dali-virtual-scroll": "https://github.com/rossenv/dali-virtual-scroll.git",
+        "smoothscroll-polyfill": "^0.4.4"
     }
 }

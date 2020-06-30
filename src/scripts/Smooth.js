@@ -1,4 +1,4 @@
-import virtualScroll from "virtual-scroll-locomotive";
+import virtualScroll from "dali-virtual-scroll";
 import Core from "./Core";
 import { lerp } from "./utils/maths";
 import { getTranslate } from "./utils/transform";

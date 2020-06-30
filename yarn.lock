@@ -2145,6 +2145,15 @@ d@1, d@^1.0.1:
     es5-ext "^0.10.50"
     type "^1.0.1"
 
+"dali-virtual-scroll@https://github.com/rossenv/dali-virtual-scroll.git":
+  version "1.4.0"
+  resolved "https://github.com/rossenv/dali-virtual-scroll.git#e2ba9416fc186dd392c074af157156810b171308"
+  dependencies:
+    bindall-standalone "^1.0.5"
+    lethargy "^1.0.2"
+    object-assign "^4.0.1"
+    tiny-emitter "^1.0.0"
+
 dashdash@^1.12.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/dashdash/-/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"
@@ -6788,15 +6797,6 @@ vinyl@^2.0.0, vinyl@^2.1.0:
     cloneable-readable "^1.0.0"
     remove-trailing-separator "^1.0.1"
     replace-ext "^1.0.0"
-
-"virtual-scroll-locomotive@https://github.com/rossenv/virtual-scroll.git":
-  version "1.4.0"
-  resolved "https://github.com/rossenv/virtual-scroll.git#6f2362bbe74304d3d7e45887709a8dcec76d2c5a"
-  dependencies:
-    bindall-standalone "^1.0.5"
-    lethargy "^1.0.2"
-    object-assign "^4.0.1"
-    tiny-emitter "^1.0.0"
 
 which-module@^1.0.0:
   version "1.0.0"
