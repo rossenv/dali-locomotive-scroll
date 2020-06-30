@@ -1,21 +1,25 @@
-import { defaults } from './options';
+import { defaults } from "./options";
 
 export default class {
     constructor(options = {}) {
-        Object.assign(this, defaults, options);
-        this.smartphone = defaults.smartphone
-        if(options.smartphone) Object.assign(this.smartphone, options.smartphone)
-        this.tablet = defaults.tablet
-        if(options.tablet) Object.assign(this.tablet, options.tablet)
+        // ssr
+        if (!process.bower) return;
 
-        this.namespace = 'locomotive';
+        Object.assign(this, defaults, options);
+        this.smartphone = defaults.smartphone;
+        if (options.smartphone)
+            Object.assign(this.smartphone, options.smartphone);
+        this.tablet = defaults.tablet;
+        if (options.tablet) Object.assign(this.tablet, options.tablet);
+
+        this.namespace = "locomotive";
         this.html = document.documentElement;
         this.windowHeight = window.innerHeight;
         this.windowWidth = window.innerWidth;
         this.windowMiddle = {
             x: this.windowWidth / 2,
-            y: this.windowHeight / 2
-        }
+            y: this.windowHeight / 2,
+        };
         this.els = [];
         this.listeners = {};
 
@@ -29,29 +33,29 @@ export default class {
         this.instance = {
             scroll: {
                 x: 0,
-                y: 0
+                y: 0,
             },
             limit: {
                 x: this.html.offsetHeight,
-                y: this.html.offsetHeight
-            }
-        }
+                y: this.html.offsetHeight,
+            },
+        };
 
-        if(this.isMobile) {
-            if(this.isTablet) {
-                this.context = 'tablet'
+        if (this.isMobile) {
+            if (this.isTablet) {
+                this.context = "tablet";
             } else {
-                this.context = 'smartphone'
+                this.context = "smartphone";
             }
         } else {
-            this.context = 'desktop'
+            this.context = "desktop";
         }
 
-        if(this.isMobile) this.direction = this[this.context].direction
-        if(this.direction === 'horizontal') {
-            this.directionAxis = 'x';
+        if (this.isMobile) this.direction = this[this.context].direction;
+        if (this.direction === "horizontal") {
+            this.directionAxis = "x";
         } else {
-            this.directionAxis = 'y';
+            this.directionAxis = "y";
         }
 
         if (this.getDirection) {
@@ -64,7 +68,7 @@ export default class {
 
         this.html.classList.add(this.initClass);
 
-        window.addEventListener('resize', this.checkResize, false);
+        window.addEventListener("resize", this.checkResize, false);
     }
 
     init() {
@@ -76,40 +80,50 @@ export default class {
     }
 
     checkResize() {
-        if(!this.resizeTick) {
+        if (!this.resizeTick) {
             this.resizeTick = true;
             requestAnimationFrame(() => {
-                this.resize()
-                this.resizeTick = false
-            })
+                this.resize();
+                this.resizeTick = false;
+            });
         }
     }
 
     resize() {}
 
     checkContext() {
-        if(!this.reloadOnContextChange) return;
+        if (!this.reloadOnContextChange) return;
 
-        this.isMobile = (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || this.windowWidth < this.tablet.breakpoint;
-        this.isTablet = this.isMobile && this.windowWidth >= this.tablet.breakpoint
+        this.isMobile =
+            /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                navigator.userAgent
+            ) ||
+            (navigator.platform === "MacIntel" &&
+                navigator.maxTouchPoints > 1) ||
+            this.windowWidth < this.tablet.breakpoint;
+        this.isTablet =
+            this.isMobile && this.windowWidth >= this.tablet.breakpoint;
 
-        let oldContext = this.context
-        if(this.isMobile) {
-            if(this.isTablet) {
-                this.context = 'tablet'
+        let oldContext = this.context;
+        if (this.isMobile) {
+            if (this.isTablet) {
+                this.context = "tablet";
             } else {
-                this.context = 'smartphone'
+                this.context = "smartphone";
             }
         } else {
-            this.context = 'desktop'
+            this.context = "desktop";
         }
 
-        if(oldContext != this.context) {
-            let oldSmooth = (oldContext == 'desktop') ? this.smooth : this[oldContext].smooth
-            let newSmooth = (this.context == 'desktop') ? this.smooth : this[this.context].smooth
+        if (oldContext != this.context) {
+            let oldSmooth =
+                oldContext == "desktop" ? this.smooth : this[oldContext].smooth;
+            let newSmooth =
+                this.context == "desktop"
+                    ? this.smooth
+                    : this[this.context].smooth;
 
-            if(oldSmooth != newSmooth)
-                window.location.reload()
+            if (oldSmooth != newSmooth) window.location.reload();
         }
     }
 
@@ -118,7 +132,7 @@ export default class {
         this.setScrollTo = this.setScrollTo.bind(this);
 
         this.scrollToEls.forEach((el) => {
-            el.addEventListener('click', this.setScrollTo, false);
+            el.addEventListener("click", this.setScrollTo, false);
         });
     }
 
@@ -126,7 +140,8 @@ export default class {
         event.preventDefault();
 
         this.scrollTo(
-            event.currentTarget.getAttribute(`data-${this.name}-href`) || event.currentTarget.getAttribute('href'),
+            event.currentTarget.getAttribute(`data-${this.name}-href`) ||
+                event.currentTarget.getAttribute("href"),
             event.currentTarget.getAttribute(`data-${this.name}-offset`)
         );
     }
@@ -142,31 +157,31 @@ export default class {
 
         this.els.forEach((el, i) => {
             if (el && (!el.inView || hasCallEventSet)) {
-                if(this.direction === 'horizontal') {
-                    if ((scrollRight >= el.left) && (scrollLeft < el.right)) {
+                if (this.direction === "horizontal") {
+                    if (scrollRight >= el.left && scrollLeft < el.right) {
                         this.setInView(el, i);
                     }
                 } else {
-                    if ((scrollBottom >= el.top) && (scrollTop < el.bottom)) {
+                    if (scrollBottom >= el.top && scrollTop < el.bottom) {
                         this.setInView(el, i);
                     }
                 }
             }
 
             if (el && el.inView) {
-                if(this.direction === 'horizontal') {
-                    if ((scrollRight < el.left) || (scrollLeft > el.right)) {
+                if (this.direction === "horizontal") {
+                    if (scrollRight < el.left || scrollLeft > el.right) {
                         this.setOutOfView(el, i);
                     }
                 } else {
-                    if ((scrollBottom < el.top) || (scrollTop > el.bottom)) {
+                    if (scrollBottom < el.top || scrollTop > el.bottom) {
                         this.setOutOfView(el, i);
                     }
                 }
             }
         });
 
-        this.els = this.els.filter(function(current, i) {
+        this.els = this.els.filter(function (current, i) {
             return current !== null;
         });
 
@@ -178,17 +193,16 @@ export default class {
         current.el.classList.add(current.class);
 
         if (current.call && this.hasCallEventSet) {
-
-            this.dispatchCall(current, 'enter');
+            this.dispatchCall(current, "enter");
 
             if (!current.repeat) {
-                this.els[i].call = false
+                this.els[i].call = false;
             }
         }
 
         if (!current.repeat && !current.speed && !current.sticky) {
-            if (!current.call || current.call && this.hasCallEventSet) {
-                this.els[i] = null
+            if (!current.call || (current.call && this.hasCallEventSet)) {
+                this.els[i] = null;
             }
         }
     }
@@ -199,7 +213,7 @@ export default class {
         }
 
         if (current.call && this.hasCallEventSet) {
-            this.dispatchCall(current, 'exit');
+            this.dispatchCall(current, "exit");
         }
 
         if (current.repeat) {
@@ -209,65 +223,72 @@ export default class {
 
     dispatchCall(current, way) {
         this.callWay = way;
-        this.callValue = current.call.split(',').map(item => item.trim());
+        this.callValue = current.call.split(",").map((item) => item.trim());
         this.callObj = current;
 
         if (this.callValue.length == 1) this.callValue = this.callValue[0];
 
-        const callEvent = new Event(this.namespace + 'call');
+        const callEvent = new Event(this.namespace + "call");
         this.el.dispatchEvent(callEvent);
     }
 
     dispatchScroll() {
-        const scrollEvent = new Event(this.namespace + 'scroll');
+        const scrollEvent = new Event(this.namespace + "scroll");
         this.el.dispatchEvent(scrollEvent);
     }
 
     setEvents(event, func) {
-
-        if(!this.listeners[event]) {
+        if (!this.listeners[event]) {
             this.listeners[event] = [];
         }
 
         const list = this.listeners[event];
         list.push(func);
 
-        if( list.length === 1 ) {
-            this.el.addEventListener(this.namespace + event, this.checkEvent, false);
+        if (list.length === 1) {
+            this.el.addEventListener(
+                this.namespace + event,
+                this.checkEvent,
+                false
+            );
         }
 
-        if (event === 'call') {
+        if (event === "call") {
             this.hasCallEventSet = true;
             this.detectElements(true);
         }
     }
 
     unsetEvents(event, func) {
-        if( !this.listeners[event] ) return;
+        if (!this.listeners[event]) return;
 
         const list = this.listeners[event];
         const index = list.indexOf(func);
 
-        if( index < 0 ) return;
+        if (index < 0) return;
 
         list.splice(index, 1);
 
-        if( list.index === 0 ) {
-            this.el.removeEventListener(this.namespace + event, this.checkEvent, false);
+        if (list.index === 0) {
+            this.el.removeEventListener(
+                this.namespace + event,
+                this.checkEvent,
+                false
+            );
         }
     }
 
     checkEvent(event) {
-        const name = event.type.replace(this.namespace, '');
+        const name = event.type.replace(this.namespace, "");
         const list = this.listeners[name];
 
-        if(!list || list.length === 0) return;
+        if (!list || list.length === 0) return;
 
-        list.forEach(func => {
+        list.forEach((func) => {
             switch (name) {
-                case 'scroll':
+                case "scroll":
                     return func(this.instance);
-                case 'call':
+                case "call":
                     return func(this.callValue, this.callWay, this.callObj);
                 default:
                     return func();
@@ -279,23 +300,27 @@ export default class {
 
     stopScroll() {}
 
-    setScroll(x,y) {
+    setScroll(x, y) {
         this.instance.scroll = {
             x: 0,
-            y: 0
-        }
+            y: 0,
+        };
     }
 
     destroy() {
-        window.removeEventListener('resize', this.checkResize, false);
+        window.removeEventListener("resize", this.checkResize, false);
 
-        Object.keys(this.listeners).forEach(event => {
-            this.el.removeEventListener(this.namespace + event, this.checkEvent, false);
+        Object.keys(this.listeners).forEach((event) => {
+            this.el.removeEventListener(
+                this.namespace + event,
+                this.checkEvent,
+                false
+            );
         });
         this.listeners = {};
 
         this.scrollToEls.forEach((el) => {
-            el.removeEventListener('click', this.setScrollTo, false);
+            el.removeEventListener("click", this.setScrollTo, false);
         });
     }
 }
