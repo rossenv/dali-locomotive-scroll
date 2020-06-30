@@ -26,6 +26,6 @@
     "dependencies": {
         "bezier-easing": "^2.1.0",
         "smoothscroll-polyfill": "^0.4.4",
-        "virtual-scroll": "^1.5.2"
+        "virtual-scroll-locomotive": "https://github.com/rossenv/virtual-scroll.git"
     }
 }
